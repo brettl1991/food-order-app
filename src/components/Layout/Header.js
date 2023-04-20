@@ -3,13 +3,14 @@ import React from "react";
 import mealsImage from "../../assets/meals.jpg";
 
 import styled from "styled-components";
+import HeaderCartButton from "./HeaderCartButton";
 
-const Header = () => {
+const Header = (props) => {
   return (
     <>
       <HeaderStyle>
         <h1>Meals4You</h1>
-        <button>Cart</button>
+        <HeaderCartButton />
       </HeaderStyle>
       <ImageContainerStyle>
         <img src={mealsImage} alt="A table full of delicious food!" />
