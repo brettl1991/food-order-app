@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const HeaderCartButton = (props) => {
   return (
-    <ButtonStyle>
+    <ButtonStyle onClick={props.onClick}>
       <CartIconStyle>
         <CartIcon />
       </CartIconStyle>
