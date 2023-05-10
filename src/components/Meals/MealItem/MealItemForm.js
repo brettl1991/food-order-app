@@ -2,13 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import Input from "../../UI/Input";
 
-const MealItemForm = () => {
+const MealItemForm = (props) => {
   return (
     <SForm>
       <Input
         label="Amount"
         input={{
-          id: "amount",
+          id: "amount_" + props.id,
           type: "number",
           min: "1",
           max: "5",
