@@ -1,12 +1,27 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import Modal from "../UI/Modal";
+import CartContext from "../../store/cart-context";
+import CartItem from "./CartItem";
 
 const Cart = (props) => {
+  const cartCtx = useContext(CartContext);
+  const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
+  const hasItems = cartCtx.items.length > 0;
+
+  const cartItemRemoveHandler = (id) => {};
+  const cartItemAddHandler = (item) => {};
   const cartItems = (
     <SCartItems>
-      {[{ id: "c1", name: "Sushi", amount: 2, price: 12.99 }].map((item) => (
-        <li>{item.name}</li>
+      {cartCtx.items.map((item) => (
+        <CartItem
+          key={item.id}
+          name={item.name}
+          amount={item.amount}
+          price={item.price}
+          onRemove={cartItemRemoveHandler.bind(null, item.id)}
+          onAdd={cartItemAddHandler.bind(null, item)}
+        />
       ))}
     </SCartItems>
   );
@@ -15,11 +30,11 @@ const Cart = (props) => {
       {cartItems}
       <STotal>
         <span>Total Amount</span>
-        <span>35.62</span>
+        <span>{totalAmount}</span>
       </STotal>
       <SActions>
         <SButtonAlt onClick={props.onClose}>Close</SButtonAlt>
-        <SOrderButton>Order</SOrderButton>
+        {hasItems && <SOrderButton>Order</SOrderButton>}
       </SActions>
     </Modal>
   );
@@ -32,7 +47,7 @@ const SCartItems = styled.ul`
   margin: 0;
   padding: 0;
   max-height: 20rem;
-  overflow: auto;
+  overflow: scroll;
 `;
 
 const STotal = styled.div`
