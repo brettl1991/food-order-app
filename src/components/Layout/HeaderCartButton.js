@@ -1,15 +1,30 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CartIcon from "../Cart/CartIcon";
 import styled from "styled-components";
 import CartContext from "../../store/cart-context";
 
 const HeaderCartButton = (props) => {
+  const [btnIsHighlighted, setBtnIsHighlighted] = useState(false);
   const cartCtx = useContext(CartContext);
-  const numberOfCartItems = cartCtx.items.reduce((curNumber, item) => {
+  const { items } = cartCtx;
+  const numberOfCartItems = items.reduce((curNumber, item) => {
     return curNumber + item.amount;
   }, 0);
+  useEffect(() => {
+    if (items.length === 0) {
+      return;
+    }
+    setBtnIsHighlighted(true);
+    const timer = setTimeout(() => {
+      setBtnIsHighlighted(false);
+    }, 300);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [items]);
+
   return (
-    <ButtonStyle onClick={props.onClick}>
+    <ButtonStyle bump={btnIsHighlighted} onClick={props.onClick}>
       <CartIconStyle>
         <CartIcon />
       </CartIconStyle>
@@ -38,6 +53,26 @@ const ButtonStyle = styled.button`
   &:active {
     background-color: #2c0d00;
   }
+
+  animation: ${({ bump }) => `${bump ? "bump 300ms ease-out" : ""}`};
+
+  @keyframes bump {
+    0% {
+      transform: scale(1);
+    }
+    10% {
+      transform: scale(0.9);
+    }
+    30% {
+      transform: scale(1.1);
+    }
+    50% {
+      transform: scale(1.15);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
 `;
 
 const CartIconStyle = styled.span`
@@ -58,25 +93,3 @@ const BadgeStyle = styled.span`
     background-color: #92320c;
   }
 `;
-
-// .bump {
-//   animation: bump 300ms ease-out;
-// }
-
-// @keyframes bump {
-//   0% {
-//     transform: scale(1);
-//   }
-//   10% {
-//     transform: scale(0.9);
-//   }
-//   30% {
-//     transform: scale(1.1);
-//   }
-//   50% {
-//     transform: scale(1.15);
-//   }
-//   100% {
-//     transform: scale(1);
-//   }
-// }
