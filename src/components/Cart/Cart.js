@@ -16,7 +16,7 @@ const Cart = (props) => {
     cartCtx.removeItem(id);
   };
   const cartItems = (
-    <SCartItems>
+    <SCartItems isMoreItemAvailable={cartCtx.items.length}>
       {cartCtx.items.map((item) => (
         <CartItem
           key={item.id}
@@ -51,7 +51,8 @@ const SCartItems = styled.ul`
   margin: 0;
   padding: 0;
   max-height: 20rem;
-  overflow: scroll;
+  overflow: ${({ isMoreItemAvailable }) =>
+    `${isMoreItemAvailable > 1 ? "scroll" : ""}`};
 `;
 
 const STotal = styled.div`
